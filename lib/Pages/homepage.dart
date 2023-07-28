@@ -4,20 +4,32 @@ import 'package:learn_design/model/cart_model.dart';
 import 'package:provider/provider.dart';
 
 import '../Components/ProdutItems.dart';
+import 'CartPage.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return CartPage();
+          }));
+        },
+        // ignore: sort_child_properties_last
+        child: const Icon(Icons.shopping_bag_outlined),
+        backgroundColor: Colors.black,
+      ),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Hello ",
               style: TextStyle(
                 fontSize: 19,
@@ -54,9 +66,10 @@ class HomePage extends StatelessWidget {
                     itemCount: value.shopItems.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 10,
+                      crossAxisSpacing: 20,
                       mainAxisSpacing: 10,
                       crossAxisCount: 2,
+                      childAspectRatio: 1 / 1.3,
                     ),
                     itemBuilder: (context, index) {
                       return ProductItems(
@@ -64,6 +77,10 @@ class HomePage extends StatelessWidget {
                         itemsPrice: value.shopItems[index][1],
                         imagePath: value.shopItems[index][2],
                         color: value.shopItems[index][3],
+                        onPressed: () {
+                          Provider.of<CartModel>(context, listen: false)
+                              .addItemsToCart(index);
+                        },
                       );
                     });
               },

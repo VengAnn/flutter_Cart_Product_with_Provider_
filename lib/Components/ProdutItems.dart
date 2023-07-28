@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ProductItems extends StatelessWidget {
   final String itemsName;
   final String itemsPrice;
   final String imagePath;
   final color;
+  void Function()? onPressed;
   ProductItems({
     super.key,
     required this.itemsName,
     required this.itemsPrice,
     required this.imagePath,
     required this.color,
+    required this.onPressed,
   });
 
   @override
@@ -23,19 +26,26 @@ class ProductItems extends StatelessWidget {
       child: Column(
         children: [
           //image
-          Image.asset(
-            imagePath,
-            width: 300,
-            height: 100,
-            fit: BoxFit.fill,
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            child: Image.asset(
+              imagePath,
+              width: 300,
+              height: 150,
+              fit: BoxFit.fill,
+            ),
           ),
           //itemName
-          Text("${itemsName}"),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text("$itemsName"),
+          ),
           //price
           MaterialButton(
-            onPressed: () {},
-            color: color[200],
-            child: Text("${itemsPrice}"),
+            onPressed: onPressed,
+            color: color[800],
+            child: Text("\$ $itemsPrice"),
           ),
         ],
       ),
